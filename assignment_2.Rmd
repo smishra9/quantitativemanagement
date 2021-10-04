@@ -1,0 +1,79 @@
+---
+title: "QUANTITATIVE Management Modelling Assignment 2"
+author: "SUMIT DUTT MISHRA"
+date: "04/10/2021"
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+###Installing the library
+```{r}
+library(lpSolveAPI)
+```
+###Setting the work directory
+```{r}
+setwd("~/Desktop/SEMESTER 2/QUANT MANAGEMENT")
+```
+
+### Creating a linear programming object with 0 constraints and 9 decision variables
+```{r}
+lpmodel1 <- make.lp(0, 9)
+lpmodel1
+```
+### Creating the objective function. since we need to maximize profit, change the sense to max.
+```{r}
+set.objfn(lpmodel1, c(420, 360, 300, 420, 360, 300, 420, 360, 300))
+```
+### As we need to maximize profit, we need to change the sense to maximum.
+```{r}
+lp.control(lpmodel1,sense='max')
+```
+# Adding the constraints
+```{r}
+add.constraint(lpmodel1, c(1, 1, 1, 0, 0, 0, 0, 0, 0), "<=", 750)
+add.constraint(lpmodel1, c(0, 0, 0, 1, 1, 1, 0, 0, 0), "<=", 900)
+add.constraint(lpmodel1, c(0, 0, 0, 0, 0, 0,1, 1, 1), "<=", 450)
+add.constraint(lpmodel1, c(20, 15, 12, 0, 0, 0, 0, 0, 0), "<=", 13000)
+add.constraint(lpmodel1, c(0, 0, 0, 20, 15, 12, 0, 0, 0), "<=", 12000)
+add.constraint(lpmodel1, c(0, 0, 0, 0, 0, 0, 20, 15, 12), "<=", 5000)
+add.constraint(lpmodel1, c(1, 1, 1, 0, 0, 0, 0, 0, 0), "<=", 900)
+add.constraint(lpmodel1, c(0, 0, 0, 1, 1, 1, 0, 0, 0), "<=", 1200)
+add.constraint(lpmodel1, c(0, 0, 0, 0, 0, 0, 1, 1, 1), "<=", 750)
+add.constraint(lpmodel1, c(6, 6, 6, -5, -5, -5, 0, 0, 0), "=", 0)
+add.constraint(lpmodel1, c( 3, 3, 3, 0, 0, 0, -5, -5, -5), "=", 0)
+```
+```{r}
+set.bounds(lpmodel1, lower = c(0, 0, 0, 0, 0, 0, 0, 0, 0), columns = c(1, 2,3,4,5,6,7,8,9))
+```
+# Setting variable names and name the constraints for identifying the variables and constraints
+```{r}
+Rows <- c("CCon1", "CCon2", "CCon3", "SCon1", "SCon2", "SCon3", "S1Con1", "S1Con2", "S1Con3", "%C1", "%C2")
+
+Columns <- c("A1Large", "A1Medium", "A1Small", "A2Large", "A2Medium", "A2Small", "A3Large", "A3Medium", "A3Small")
+
+dimnames(lpmodel1) <- list(Rows, Columns)
+```
+```{r}
+lpmodel1
+```
+```{r}
+write.lp(lpmodel1, filename = "Quantsassignment2.lp", type = "lp")
+```
+```{r}
+solve(lpmodel1)
+```
+```{r}
+get.objective(lpmodel1)
+get.variables(lpmodel1)
+```
+
+
+ 
+
+
+

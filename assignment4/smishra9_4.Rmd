@@ -1,0 +1,56 @@
+---
+title: "Assignment 4 Quantitative Management Modelling"
+author: "Sumit Dutt Mishra"
+date: "24/10/2021"
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+###1)Heart Start produces automated external defibrillators (AEDs) in each of two different plants (A and B). The unit production costs and monthly production capacity of the two plants are indicated in the table below. The AEDs are sold through three wholesalers. The shipping cost from each plant to the warehouse of each wholesaler along with the monthly demand from each wholesaler are also indicated in the table. How many AEDs should be produced in each plant, and how should they be distributed to each of the three wholesaler warehouses so as to minimize the combined cost of production and shipping?
+
+        Unit Shipping Cost                        Unit                Monthly
+        Warehouse 1   Warehouse 2   Warehouse 3   ProductionCost      ProductionCapacity
+        
+Plant A   $22           $14           $30           $600                100
+
+Plant B   $16           $20           $24           $625                120
+
+<hr/>
+Monthly   80            60            70
+Demand
+
+#### Using Library lpSolve
+```{r}
+library('lpSolveAPI')
+```
+
+#### Reading the LP file.
+
+```{r}
+H_Start <- read.lp("heart1.lp");
+H_Start
+```
+#### Solving the LP.
+```{r}
+solve(H_Start)
+```
+#### Computing the objective function value.
+```{r}
+get.objective(H_Start)
+```
+#### Computing the values of decision variables.
+```{r}
+get.variables(H_Start)
+```
+
+#### Computing the values of constraints.
+```{r}
+get.constraints(H_Start)
+```
+
+
+
